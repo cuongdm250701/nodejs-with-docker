@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  database-mysql:
+    image: mysql:8.0.34
+    restart: always
+    container_name: db-mysql-container
+    environment:
+      - MYSQL_DATABASE=app_blog_nodejs
+      - MYSQL_ROOT_PASSWORD=cuongdm@250701
+    ports:
+      - 3307:3306
+    volumes:
+      - db:/var/lib/mysql
+    expose: 
+      - 3306
+  
+  backend:
+    image: node-app-blog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node-app-blog-container
+    restart: unless-stopped
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=database-mysql
+    ports: 
+      - 3002:3001
+volumes:
+  db:
+
