@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d build --copy-files",
-    "start": "npm run build && node build/app.js"
+    "start": "npm run build && node build/app.js",
+    "sync": "npm run build && node build/config/sync.js"
   },
   "author": "cuong.domanh",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "module-alias": "^2.2.3",
     "mysql2": "^3.6.1",
     "sequelize": "^6.11.0"
   },
@@ -20,5 +22,11 @@
     "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.22.20"
+  },
+  "_moduleAliases": {
+    "@src": "./src",
+    "@root": ".",
+    "@models": "./build/models",
+    "@config": "./build/config"
   }
 }

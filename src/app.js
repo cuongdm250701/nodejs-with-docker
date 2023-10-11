@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/connect-db');
+const connect_db = require('./config/connect-db');
 
 const app = express();
 
@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-connectDB();
+
+connect_db();
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
