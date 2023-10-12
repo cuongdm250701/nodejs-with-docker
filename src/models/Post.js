@@ -1,53 +1,56 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const sequelize = require(`${__dirname}/../config/env.js`);
 
-class User extends Model {}
+class Post extends Model {}
 
-User.init({
+Post.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
     },
-    user_name: {
-        type: DataTypes.STRING(50),
+    title: {
+        type: DataTypes.STRING(150),
         allowNull: false,
-        unique: true,
     },
-    email: {
-        type: DataTypes.STRING(50),
+    content: {
+        type: DataTypes.TEXT,
         allowNull: false,
-        unique: true,
     },
-    is_active: {
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    category_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    status: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1
     },
-    is_login: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-    }
 }, {
     sequelize, // We need to pass the connection instance
-    modelName: 'User',
+    modelName: 'Post',
     freezeTableName: true // Enforcing the table name to be equal to the model name
 });
 
 // Associate
-User.associations = (db) => {
-    db.User.hasMany(db.Post, {
+
+Post.associations = (db) => {
+    db.Post.belongsTo(db.User, {
         foreignKey: {
-            name: 'user_id',
+            name: 'user_id'
         },
     });
 
-    db.User.hasMany(db.Comment, {
+    db.Post.belongsTo(db.CategoryPost, {
         foreignKey: {
-            name: 'user_id',
-        },
+            name: 'category_id'
+        }
     });
 };
 
-module.exports = () => User;
+module.exports = () => Post;

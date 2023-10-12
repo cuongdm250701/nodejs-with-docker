@@ -5,7 +5,7 @@ services:
     restart: always
     container_name: db-mysql-container
     environment:
-      - MYSQL_DATABASE=app_blog_nodejs
+      - MYSQL_DATABASE=blog_with_nodejs
       - MYSQL_ROOT_PASSWORD=cuongdm@250701
     ports:
       - 3307:3306
@@ -24,6 +24,7 @@ services:
     environment:
       - DB_PORT=3306
       - DB_HOST=database-mysql
+      - DB_DATABASE_NAME=blog_with_nodejs
     ports: 
       - 3002:3001
 volumes:

@@ -14,5 +14,13 @@ fs.readdirSync(__dirname)
     );
     db[model.name] = model;
   });
-  
-console.log('db ', db);
+
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associations) {
+    db[modelName].associations(db)
+  }
+})
+db.sequelize = sequelize; // for accessing static props and functions like Op.or
+db.Sequelize = Sequelize; // for accessing connection props and functions like 'query' or 'transaction'
+
+module.exports = db;

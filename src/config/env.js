@@ -24,7 +24,8 @@ const input_connnection = {
     define: {
         hooks: true,
     },
-    timezone: "+07:00"
+    timezone: "+07:00",
+    logging: true,
 }
 
 const sequelize = new Sequelize(env.database, env.user, env.password, input_connnection);
