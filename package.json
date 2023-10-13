@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src -d build --copy-files",
-    "start": "npm run build && node build/app.js",
+    "start": "npm run build && node build/server.js",
     "sync": "npm run build && node build/config/sync.js"
   },
   "author": "cuong.domanh",
@@ -28,6 +28,7 @@
     "@src": "./src",
     "@root": ".",
     "@models": "./build/models",
-    "@config": "./build/config"
+    "@config": "./build/config",
+    "@routes": "./build/routes"
   }
 }
