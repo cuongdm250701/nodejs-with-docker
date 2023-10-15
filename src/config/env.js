@@ -25,7 +25,6 @@ const input_connnection = {
     hooks: true,
   },
   timezone: "+07:00",
-  // logging: true,
 };
 
 const sequelize = new Sequelize(
