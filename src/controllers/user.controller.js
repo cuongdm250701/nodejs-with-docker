@@ -1,5 +1,6 @@
 require("module-alias/register");
-const service = require("@services/user.service");
+const services = require("@services/user.service");
+
 
 const login = async (req, res) => {
   const { username } = req.body;
@@ -7,8 +8,7 @@ const login = async (req, res) => {
 };
 
 const sign_up = async (req, res) => {
-  const data = service.sign_up(req.body);
-  res.json({ data });
+  return services.sign_up(req.body);
 };
 
 module.exports = { login, sign_up };

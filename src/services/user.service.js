@@ -1,12 +1,10 @@
 require("module-alias/register");
 const bcrypt = require("bcrypt");
-const { validate_sign_up } = require("@validations/user.validation");
+const { User } = require("@models/");
 
 const sign_up = async (body) => {
-  // validate
-  const schema = validate_sign_up();
-  const { username, email, password } = await schema.validateAsync(body);
-  return body;
+   const find_user = await User.findOne({where: {user_name: body.username}});
+   return find_user;
 };
 
 const generate_password = (password) => {
