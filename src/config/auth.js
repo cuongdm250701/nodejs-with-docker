@@ -11,13 +11,9 @@ const generate_token = (payload) => {
 };
 
 // Verify token
-const verify_token = async (access_token) => {
-  try {
-    const data = await jwt.verify.apply(access_token, process.env.SECRET_KEY);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+const verify_token = (access_token) => {
+  const data = jwt.verify(access_token, process.env.SECRET_KEY);
+  return data;
 };
 
 module.exports = { generate_token, verify_token };

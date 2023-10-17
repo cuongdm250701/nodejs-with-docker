@@ -39,6 +39,7 @@
     "@services": "./build/services",
     "@validations": "./build/validations",
     "@helpers": "./build/helpers",
-    "@common": "./build/common"
+    "@common": "./build/common",
+    "@middleware": "./build/middleware"
   }
 }

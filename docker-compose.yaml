@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   database-mysql:
     image: mysql:8.0.34
@@ -11,9 +11,9 @@ services:
       - 3307:3306
     volumes:
       - db:/var/lib/mysql
-    expose: 
+    expose:
       - 3306
-  
+
   backend:
     image: node-app-blog
     build:
@@ -25,8 +25,8 @@ services:
       - DB_PORT=3306
       - DB_HOST=database-mysql
       - DB_DATABASE_NAME=blog_with_nodejs
-    ports: 
+      - DB_PASSWORD=cuongdm@250701
+    ports:
       - 3002:3001
 volumes:
   db:
-
