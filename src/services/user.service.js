@@ -62,6 +62,22 @@ const sign_out = async (current_user) => {
   await User.update({ is_login: false }, { where: { id: current_user.id } });
 };
 
+/** EDIT PASSWORD */
+
+const edit_password = async (params) => {
+  const { current_password, new_password, current_user } = params;
+  const check_pass = compare_password(current_password, current_user.password);
+  if (!check_pass) {
+    return REST_FULL_API_CODE.PASSWORD_INVALID;
+  }
+  const update_pass = generate_password(new_password);
+  await User.update(
+    { password: update_pass },
+    { where: { id: current_user.id } }
+  );
+  return true;
+};
+
 const generate_password = (password) => {
   const salt = 10;
   const result = bcrypt.hashSync(password, salt, null);
@@ -72,4 +88,4 @@ const compare_password = (password, hash) => {
   return bcrypt.compareSync(password, hash);
 };
 
-module.exports = { sign_up, sign_in, sign_out };
+module.exports = { sign_up, sign_in, sign_out, edit_password };

@@ -52,4 +52,28 @@ const validate_sign_in = async (req, res, next) => {
   }
 };
 
-module.exports = { validate_sign_up, validate_sign_in };
+const validate_edit_password = async (req, res, next) => {
+  try {
+    const schema = Joi.object()
+      .keys({
+        current_password: Joi.string()
+          .required()
+          .error(
+            API_CODE.INVALID_PARAMS.error_invalid_params("current_password")
+          ),
+        new_password: Joi.string()
+          .required()
+          .error(API_CODE.INVALID_PARAMS.error_invalid_params("new_password")),
+      })
+      .unknown(true);
+    await schema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    res.json({
+      message: error.message,
+      code: error.code,
+    });
+  }
+};
+
+module.exports = { validate_sign_up, validate_sign_in, validate_edit_password };
