@@ -16,6 +16,8 @@ const REST_FULL_API_CODE = {
   NOT_FOUND: { code: 3, status: 404, message: "Can't find user" },
   PASSWORD_INVALID: { code: 4, status: 400, message: "Password invalid" },
   PERMISSION_DENIED: { code: 5, status: 400, message: "Permission denied" },
+  NOT_EXISTS: { code: 6, status: 400, message: "NOT EXISTS" },
+  UPDATE_FAIL: { code: 7, status: 400, message: "Can't update" },
 };
 
 module.exports = {
