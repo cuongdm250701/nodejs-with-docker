@@ -24,4 +24,22 @@ const edit_password = async (req, res) => {
   });
 };
 
-module.exports = { sign_in, sign_up, sign_out, edit_password };
+const forgot_password = async (req, res) => {
+  const { email } = req.body;
+  return services.forgot_password({ email });
+};
+
+const reset_password = async (req, res) => {
+  const { user_id, token } = req.params;
+  const { new_password } = req.body;
+  return services.reset_password({ user_id, token, new_password });
+};
+
+module.exports = {
+  sign_in,
+  sign_up,
+  sign_out,
+  edit_password,
+  forgot_password,
+  reset_password,
+};

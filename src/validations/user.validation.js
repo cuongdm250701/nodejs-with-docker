@@ -76,4 +76,47 @@ const validate_edit_password = async (req, res, next) => {
   }
 };
 
-module.exports = { validate_sign_up, validate_sign_in, validate_edit_password };
+const validate_forgot_password = async (req, res, next) => {
+  try {
+    const schema = Joi.object();
+    keys({
+      email: Joi.string()
+        .required()
+        .trim()
+        .regex(REGEX_EMAIL)
+        .error(API_CODE.INVALID_PARAMS.error_invalid_params("email")),
+    }).unknown(true);
+    await schema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    res.json({
+      message: error.message,
+      code: error.code,
+    });
+  }
+};
+
+const validate_reset_password = async (req, res, next) => {
+  try {
+    const schema = Joi.object().keys({
+      new_password: Joi.string()
+        .required()
+        .error(API_CODE.INVALID_PARAMS.error_invalid_params("new_password")),
+    });
+    await schema.validateAsync(req.body);
+    next();
+  } catch (error) {
+    res.json({
+      message: error.message,
+      code: error.code,
+    });
+  }
+};
+
+module.exports = {
+  validate_sign_up,
+  validate_sign_in,
+  validate_edit_password,
+  validate_forgot_password,
+  validate_reset_password,
+};

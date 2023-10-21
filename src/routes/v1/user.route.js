@@ -6,6 +6,8 @@ const {
   validate_sign_up,
   validate_sign_in,
   validate_edit_password,
+  validate_forgot_password,
+  validate_reset_password,
 } = require("@validations/user.validation");
 const { response_create_or_update } = require("@common/response");
 const { authentication, authorization } = require("@middleware/");
@@ -31,6 +33,16 @@ router
     authentication,
     validate_edit_password,
     response_create_or_update(user_controller.edit_password)
+  )
+  .post(
+    "/forgot-password",
+    validate_forgot_password,
+    response_create_or_update(user_controller.forgot_password)
+  )
+  .put(
+    "/reset-password/:user_id/:token",
+    validate_reset_password,
+    response_create_or_update(user_controller.reset_password)
   );
 
 module.exports = router;

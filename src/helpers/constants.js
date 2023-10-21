@@ -4,6 +4,8 @@ const ROLE = {
   CUSTOMER: 2,
 };
 
+const ADD_MINUTES = new Date(new Date().getTime() + 5 * 60000);
+
 const MESSAGE = {
   INVALID_PARAMS: "Params is invalid",
 };
@@ -18,6 +20,11 @@ const REST_FULL_API_CODE = {
   PERMISSION_DENIED: { code: 5, status: 400, message: "Permission denied" },
   NOT_EXISTS: { code: 6, status: 400, message: "NOT EXISTS" },
   UPDATE_FAIL: { code: 7, status: 400, message: "Can't update" },
+  INVALID_TOKEN_OR_EXPIRES: {
+    code: 8,
+    status: 400,
+    message: "Invalid token or expires",
+  },
 };
 
 module.exports = {
@@ -25,4 +32,5 @@ module.exports = {
   ROLE,
   MESSAGE,
   REST_FULL_API_CODE,
+  ADD_MINUTES,
 };

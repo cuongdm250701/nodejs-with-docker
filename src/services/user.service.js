@@ -1,7 +1,9 @@
 require("module-alias/register");
 const bcrypt = require("bcrypt");
-const { REST_FULL_API_CODE } = require("@helpers/constants");
-const { User, Sequelize } = require("@models/");
+const crypto = require("crypto");
+const { REST_FULL_API_CODE, ADD_MINUTES } = require("@helpers/constants");
+const { User, Token, Sequelize } = require("@models/");
+const send_mail = require("@helpers/mailer");
 const { generate_token } = require("@config/auth");
 
 const { Op } = Sequelize;
@@ -78,6 +80,53 @@ const edit_password = async (params) => {
   return true;
 };
 
+/** FORGOT PASSWORD */
+
+const forgot_password = async (params) => {
+  const { email } = params;
+  const user = await User.findOne({ where: { email: email } });
+  if (!user) {
+    return REST_FULL_API_CODE.NOT_FOUND;
+  }
+  let token = await Token.findOne({ where: { user_id: user.id } });
+  if (!token) {
+    token = await Token.create({
+      user_id: user.id,
+      token: crypto.randomBytes(10).toString("hex"),
+      token_expires: ADD_MINUTES,
+    });
+  }
+  const link = `${process.env.BASE_URL}/password-reset/${user.id}/${token.token}`;
+  await send_mail(user.email, "Password reset", link);
+  return "LINK SENT TO EMAIL";
+};
+
+/** RESET PASSWORD */
+
+const reset_password = async (params) => {
+  const { user_id, token, new_password } = params;
+  const user = await User.findOne({ where: { id: user_id } });
+  if (!user) {
+    return REST_FULL_API_CODE.NOT_FOUND;
+  }
+  const check_token = await Token.findOne({
+    where: { user_id: user_id, token: token },
+  });
+  if (!check_token) {
+    return REST_FULL_API_CODE.INVALID_TOKEN_OR_EXPIRES;
+  }
+  const check_time =
+    new Date(check_token.token_expires).getTime() > new Date().getTime();
+  if (!check_time) {
+    return REST_FULL_API_CODE.INVALID_TOKEN_OR_EXPIRES;
+  }
+  const password_hash = generate_password(new_password);
+  await User.update({ password: password_hash }, { where: { id: user_id } });
+  await Token.destroy({ where: { id: check_token.id } });
+  return true;
+};
+
+/** ===================================== */
 const generate_password = (password) => {
   const salt = 10;
   const result = bcrypt.hashSync(password, salt, null);
@@ -88,4 +137,11 @@ const compare_password = (password, hash) => {
   return bcrypt.compareSync(password, hash);
 };
 
-module.exports = { sign_up, sign_in, sign_out, edit_password };
+module.exports = {
+  sign_up,
+  sign_in,
+  sign_out,
+  edit_password,
+  forgot_password,
+  reset_password,
+};
