@@ -32,6 +32,10 @@ Post.init(
       allowNull: false,
       defaultValue: 1,
     },
+    reason: {
+      type: DataTypes.STRING(150),
+      allowNull: true,
+    },
   },
   {
     sequelize, // We need to pass the connection instance

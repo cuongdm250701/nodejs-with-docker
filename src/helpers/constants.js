@@ -14,6 +14,7 @@ const ADD_MINUTES = new Date(new Date().getTime() + 5 * 60000);
 
 const MESSAGE = {
   INVALID_PARAMS: "Params is invalid",
+  REQUIRE_REASON: "Require reason when have status reject",
 };
 
 const REST_FULL_API_CODE = {

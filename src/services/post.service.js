@@ -1,6 +1,10 @@
 require("module-alias/register");
 const { Post, CategoryPost, Sequelize } = require("@models/");
-const { REST_FULL_API_CODE } = require("@helpers/constants");
+const {
+  REST_FULL_API_CODE,
+  STATUS_APPROVAL_POST,
+  MESSAGE,
+} = require("@helpers/constants");
 const { Op } = Sequelize;
 
 const create = async (params) => {
@@ -56,19 +60,73 @@ const destroy = async (params) => {
 };
 
 const list = async (params) => {
-  const { category_id } = params;
+  const { category_id, limit, offset, page, title, content } = params;
   const category = await CategoryPost.findOne({ where: { id: category_id } });
   if (!category) {
     return REST_FULL_API_CODE.NOT_EXISTS;
   }
-  const posts = await Post.findAll({ where: { category_id: category_id } });
-  return posts;
+  const { count, rows } = await Post.findAndCountAll({
+    where: {
+      category_id: category_id,
+      title: {
+        [Op.substring]: title,
+      },
+      content: {
+        [Op.substring]: content,
+      },
+    },
+    limit,
+    offset,
+  });
+  return {
+    data: rows,
+    meta_data: {
+      page: page,
+      total: count,
+      limit: limit,
+    },
+  };
 };
 
 const my_posts = async (params) => {
-  const { current_user } = params;
-  const posts = await Post.findAll({ where: { user_id: current_user.id } });
-  return posts;
+  const { current_user, limit, offset, page, title, content } = params;
+  const { count, rows } = await Post.findAndCountAll({
+    where: {
+      user_id: current_user.id,
+      title: {
+        [Op.substring]: title,
+      },
+      content: {
+        [Op.substring]: content,
+      },
+    },
+    limit,
+    offset,
+  });
+  return {
+    data: rows,
+    meta_data: {
+      page: page,
+      total: count,
+      limit: limit,
+    },
+  };
+};
+
+const approved_posts = async (params) => {
+  const { post_id, reason, status } = params;
+  const found_post = await Post.findOne({ where: { id: post_id } });
+  if (!found_post) {
+    return REST_FULL_API_CODE.NOT_EXISTS;
+  }
+  if (status === STATUS_APPROVAL_POST.REJECT && !reason) {
+    return MESSAGE.REQUIRE_REASON;
+  }
+  await Post.update(
+    { reason: reason, status: status },
+    { where: { id: post_id } }
+  );
+  return true;
 };
 
 module.exports = {
@@ -77,4 +135,5 @@ module.exports = {
   destroy,
   list,
   my_posts,
+  approved_posts,
 };

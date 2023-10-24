@@ -29,12 +29,27 @@ const destroy = async (req, res) => {
 
 const list = async (req, res) => {
   const { category_id } = req.params;
-  return services.list({ category_id });
+  const { limit, offset, page, title, content } = req.query;
+  return services.list({ category_id, limit, offset, page, title, content });
 };
 
 const my_posts = async (req, res) => {
   const current_user = req.current_user;
-  return services.my_posts({ current_user });
+  const { limit, offset, page, title, content } = req.query;
+  return services.my_posts({
+    current_user,
+    limit,
+    offset,
+    page,
+    title,
+    content,
+  });
+};
+
+const approved_posts = async (req, res) => {
+  const { post_id } = req.params;
+  const { reason, status } = req.body;
+  return services.approved_posts({ post_id, reason, status });
 };
 
 module.exports = {
@@ -43,4 +58,5 @@ module.exports = {
   destroy,
   list,
   my_posts,
+  approved_posts,
 };

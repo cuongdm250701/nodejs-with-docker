@@ -8,8 +8,11 @@ const {
   response_get,
   response_delete,
 } = require("@common/response");
-const { validate_post } = require("@validations/post.validation");
-const { authentication, authorization } = require("@middleware/");
+const {
+  validate_post,
+  validate_approved_post,
+} = require("@validations/post.validation");
+const { authentication, authorization, paging } = require("@middleware/");
 
 router
   .post(
@@ -33,12 +36,21 @@ router
     "/:category_id",
     authentication,
     authorization([ROLE.ADMIN]),
+    paging,
     response_get(posts_controller.list)
   )
   .get(
     "/my-posts/list",
     authentication,
+    paging,
     response_get(posts_controller.my_posts)
+  )
+  .put(
+    "/:post_id",
+    authentication,
+    authorization([ROLE.ADMIN]),
+    validate_approved_post,
+    response_create_or_update(posts_controller.approved_posts)
   );
 
 module.exports = router;
