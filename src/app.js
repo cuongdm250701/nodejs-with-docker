@@ -9,13 +9,13 @@ const connect_db = require("./config/connect-db");
 const app = express();
 
 /** RESTRICT IPS */
-app.use((req, res, next) => {
-  const check_ip = restrict_ips(req.socket.remoteAddress, res);
-  if (!check_ip) {
-    res.end("FORBIDDEN");
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   const check_ip = restrict_ips(req.socket.remoteAddress, res);
+//   if (!check_ip) {
+//     res.end("FORBIDDEN");
+//   }
+//   next();
+// });
 
 /** CORS */
 app.use(cors(options));
