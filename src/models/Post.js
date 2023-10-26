@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes, Model } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const sequelize = require(`${__dirname}/../config/env.js`);
 
 class Post extends Model {}
@@ -56,6 +56,12 @@ Post.associations = (db) => {
   db.Post.belongsTo(db.CategoryPost, {
     foreignKey: {
       name: "category_id",
+    },
+  });
+
+  db.Post.hasMany(db.PostFavorite, {
+    foreignKey: {
+      name: "post_id",
     },
   });
 };

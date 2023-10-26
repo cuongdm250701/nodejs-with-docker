@@ -69,10 +69,10 @@ const list = async (params) => {
     where: {
       category_id: category_id,
       title: {
-        [Op.substring]: title,
+        [Op.substring]: title || "",
       },
       content: {
-        [Op.substring]: content,
+        [Op.substring]: content || "",
       },
     },
     limit,
@@ -123,7 +123,10 @@ const approved_posts = async (params) => {
     return MESSAGE.REQUIRE_REASON;
   }
   await Post.update(
-    { reason: reason, status: status },
+    {
+      reason: status !== STATUS_APPROVAL_POST.REJECT ? null : reason,
+      status: status,
+    },
     { where: { id: post_id } }
   );
   return true;

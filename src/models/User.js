@@ -60,6 +60,12 @@ User.associations = (db) => {
       name: "user_id",
     },
   });
+
+  db.User.hasMany(db.PostFavorite, {
+    foreignKey: {
+      name: "user_id",
+    },
+  });
 };
 
 module.exports = () => User;
