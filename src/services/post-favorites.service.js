@@ -36,12 +36,6 @@ const list = async (params) => {
   const { title, content, limit, offset, page, current_user } = params;
   const { rows, count } = await PostFavorite.findAndCountAll({
     where: {
-      //     title: {
-      //       [Op.substring]: title,
-      //     },
-      //     content: {
-      //       [Op.substring]: content,
-      //     },
       user_id: current_user.id,
     },
     include: [

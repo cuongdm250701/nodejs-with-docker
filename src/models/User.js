@@ -66,6 +66,18 @@ User.associations = (db) => {
       name: "user_id",
     },
   });
+
+  db.User.hasMany(db.Follow, {
+    foreignKey: {
+      name: "followed_id",
+    },
+  });
+
+  db.User.hasMany(db.Follow, {
+    foreignKey: {
+      name: "follow_by_id",
+    },
+  });
 };
 
 module.exports = () => User;

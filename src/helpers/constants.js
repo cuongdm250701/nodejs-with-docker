@@ -4,6 +4,11 @@ const ROLE = {
   CUSTOMER: 2,
 };
 
+const ACTIVE = {
+  IS_ACTIVE: 1,
+  UNACTIVE: 2,
+};
+
 const STATUS_APPROVAL_POST = {
   PENDING: 1,
   APPROVAL: 2,
@@ -41,4 +46,5 @@ module.exports = {
   REST_FULL_API_CODE,
   ADD_MINUTES,
   STATUS_APPROVAL_POST,
+  ACTIVE,
 };

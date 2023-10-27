@@ -35,5 +35,6 @@ router.use("/users", require("@routes/v1/user.route"));
 router.use("/category-posts", require("@routes/v1/category-post.route"));
 router.use("/posts", require("@routes/v1/post.route"));
 router.use("/comments", require("@routes/v1/comment.route"));
+router.use("/follows", require("@routes/v1/follow.route"));
 
 module.exports = router;
