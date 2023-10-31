@@ -78,6 +78,18 @@ User.associations = (db) => {
       name: "follow_by_id",
     },
   });
+
+  db.User.hasMany(db.Notifycation, {
+    foreignKey: {
+      name: "created_by_id",
+    },
+  });
+
+  db.User.hasMany(db.Notifycation, {
+    foreignKey: {
+      name: "receiver_id",
+    },
+  });
 };
 
 module.exports = () => User;

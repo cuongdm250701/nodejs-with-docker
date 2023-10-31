@@ -1,5 +1,11 @@
 require("module-alias/register");
-const { Post, CategoryPost, Sequelize } = require("@models/");
+const {
+  Post,
+  CategoryPost,
+  Follow,
+  Notifycation,
+  Sequelize,
+} = require("@models/");
 const {
   REST_FULL_API_CODE,
   STATUS_APPROVAL_POST,
@@ -21,6 +27,19 @@ const create = async (params) => {
     user_id: current_user.id,
     category_id: category_id,
   });
+  // create notifycation
+  const followers = await Follow.findAll({
+    where: { followed_id: current_user.id, is_receive: true },
+  });
+  const notifycations = followers.map((item) => {
+    return {
+      title: post.title,
+      content: post.content,
+      created_by_id: current_user.id,
+      receiver_id: item.follow_by_id,
+    };
+  });
+  await Notifycation.bulkCreate(notifycations);
   return post;
 };
 
